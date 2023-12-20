@@ -1,11 +1,11 @@
-const express = require ('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
-const User = require('./user');
+const express = require ('express')
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const expressJwt = require('express-jwt')
+const User = require('./user')
 
-mongoose.connect('mongodb+srv://Davmon09:jesus1998@cluster0.2fj43cf.mongodb.net/test?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://Davmon09:jesus1998@cluster0.2fj43cf.mongodb.net/auth?retryWrites=true&w=majority')
 
 const app = express()
 
@@ -16,10 +16,10 @@ app.post('/register', async (req, res) => {
     console.log({ body })
     try {
         const isUser = await User.findOne({ email: body.email })
-        if (isUser)  {
+        if (isUser) {
             return res.status(403).send('usuario ya existe')
         }
-        const salt = await bcrypt.genSalt
+        const salt = await bcrypt.genSalt()
         const hashed = await bcrypt.hash(body.password, salt)
         const user = await User.create({ email: body.email, password: hashed, salt })
 
